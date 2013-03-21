@@ -22,4 +22,9 @@ public class SeedStore extends SeedContainer {
         /* Move failed*/
         return false;
     }
+
+    @Override
+    protected int getSeedCount() {
+        return numberOfSeedsInContainer;
+    }
 }

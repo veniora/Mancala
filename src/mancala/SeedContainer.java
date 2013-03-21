@@ -17,5 +17,7 @@ public abstract class SeedContainer {
     /* Check if current player can add a seed to that entity*/
     protected abstract boolean addSeed(int player, int mobileSeeds);
 
+    protected abstract int getSeedCount();
+
 
 }

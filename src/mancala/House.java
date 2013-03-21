@@ -20,6 +20,11 @@ public class House extends SeedContainer{
         return true;
     }
 
+    @Override
+    protected int getSeedCount() {
+        return numberOfSeedsInContainer;
+    }
+
     /* When taken from another house*/
     private void insertLiberatedSeeds (int seedNumber){
         numberOfSeedsInContainer += seedNumber;
