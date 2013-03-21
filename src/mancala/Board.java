@@ -1,5 +1,7 @@
 package mancala;
 
+import utility.MockIO;
+
 /**
  * Created with IntelliJ IDEA.
  * User: michael
@@ -19,9 +21,11 @@ public class Board {
     private int currentContainer;
     private int currentPlayer;
     private int halfBoard;
+    private MockIO io;
 
 
-    public Board(int housesPerPlayer, int seedsPerHouse) {
+    public Board(MockIO io, int housesPerPlayer, int seedsPerHouse) {
+        this.io = io;
         this.housesPerPlayer = housesPerPlayer;
         this.seedsPerHouse = seedsPerHouse;
         createBoard();
@@ -114,7 +118,7 @@ public class Board {
             next = 0;
         }
         currentContainer = next;
-        System.out.println("CurrentIndex: "+currentContainer);
+//        System.out.println("CurrentIndex: "+currentContainer);
     }
     private void createBoard(){
         int boardSize = 2*housesPerPlayer + 2;
@@ -142,7 +146,7 @@ public class Board {
             borderCenterSection += "-------+";
         }
         String borderRow = String.format("+----+" + borderCenterSection + "----+");
-        String centreRow = String.format("|    |" + borderCenterSection + "    |");
+        String centreRow = String.format("|    |" + borderCenterSection.subSequence(0, borderCenterSection.length()-1) + "|    |");
 
         /* Content rows*/
         /* Top row is player2*/
@@ -159,11 +163,11 @@ public class Board {
         }
         p1Row += " P1 |";
 
-        System.out.println(borderRow);
-        System.out.println(p2Row);
-        System.out.println(centreRow);
-        System.out.println(p1Row);
-        System.out.println(borderRow);
+        io.println(borderRow);
+        io.println(p2Row);
+        io.println(centreRow);
+        io.println(p1Row);
+        io.println(borderRow);
 
     }
 
