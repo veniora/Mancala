@@ -2,7 +2,7 @@ package mancala;
 
 /**
  * All common functionality that seedContainers must share
- * Created from board class
+ * Created from inside board class
  */
 public abstract class SeedContainer {
 

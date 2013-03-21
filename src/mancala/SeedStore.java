@@ -33,6 +33,7 @@ public class SeedStore extends SeedContainer {
         return numberOfSeedsInContainer;
     }
 
+    /* Not relevant - a downside of abstract inheritance*/
     @Override
     protected int surrenderAllSeeds() {
         return -1;

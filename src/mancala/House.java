@@ -2,16 +2,15 @@ package mancala;
 
 /**
  * Created with IntelliJ IDEA.
- * User: michael
- * Date: 21/03/13
- * Time: 11:39 AM
- * To change this template use File | Settings | File Templates.
+ * Simple house class
+ * Overrides fields from SeedContainer to provide unique behaviour
  */
 public class House extends SeedContainer{
 
     protected House(int owner, int numberOfSeedsInContainer) {
         super(owner, numberOfSeedsInContainer);
         lastSeedAddedIntoEmpty = GameMove.STEAL_SEEDS;
+        // Other actions are not of interest
     }
 
     @Override
@@ -42,6 +41,7 @@ public class House extends SeedContainer{
         return seeds;
     }
 
+    /* Simply dump seeds into house - not actually used*/
     @Override
     protected void insertLiberatedSeeds(int seedNumber) {
         numberOfSeedsInContainer += seedNumber;
