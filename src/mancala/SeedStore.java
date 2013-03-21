@@ -10,21 +10,30 @@ package mancala;
 public class SeedStore extends SeedContainer {
     protected SeedStore(int owner, int numberOfSeedsInContainer) {
         super(owner, numberOfSeedsInContainer);
+        lastSeedAdded = GameMove.EXTRA_TURN;
     }
 
     @Override
-    protected boolean addSeed(int player, int mobileSeeds) {
+    protected GameMove addSeed(int player, int seedsRemaining) {
         /* Player can only move through their own store*/
         if (player == owner){
             numberOfSeedsInContainer++;
-            return true;
+            if (seedsRemaining == 1){   /* last seed*/
+                return lastSeedAdded;
+            }
+            return regularSeedAdded;
         }
         /* Move failed*/
-        return false;
+        return null;
     }
 
     @Override
     protected int getSeedCount() {
         return numberOfSeedsInContainer;
+    }
+
+    @Override
+    protected int surrenderAllSeeds() {
+        return -1;
     }
 }

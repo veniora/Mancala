@@ -11,13 +11,17 @@ public class House extends SeedContainer{
 
     protected House(int owner, int numberOfSeedsInContainer) {
         super(owner, numberOfSeedsInContainer);
+        lastSeedAdded = GameMove.STEAL_SEEDS;
     }
 
     @Override
-    protected boolean addSeed(int player, int mobileSeeds) {
+    protected GameMove addSeed(int player, int seedsRemaining) {
         /* House does not care who owns it*/
         numberOfSeedsInContainer++;
-        return true;
+        if (seedsRemaining == 1){   /* last seed*/
+            return lastSeedAdded;
+        }
+        return regularSeedAdded;
     }
 
     @Override
@@ -26,15 +30,17 @@ public class House extends SeedContainer{
     }
 
     /* When taken from another house*/
-    private void insertLiberatedSeeds (int seedNumber){
+    public void insertLiberatedSeeds (int seedNumber){
         numberOfSeedsInContainer += seedNumber;
     }
 
     /* When an opponent has landed on an empty house that they own with their final seed,
     they can apparently take the contents of the equivalent player house*/
-    private int surrenderAllSeeds() {
+    @Override
+    public int surrenderAllSeeds() {
         int seeds = numberOfSeedsInContainer;
         numberOfSeedsInContainer = 0;
         return seeds;
     }
+
 }

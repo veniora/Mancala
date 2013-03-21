@@ -8,6 +8,8 @@ public abstract class SeedContainer {
 
     protected int owner;
     protected int numberOfSeedsInContainer;
+    protected GameMove regularSeedAdded = GameMove.GO_TO_NEXT;
+    protected GameMove lastSeedAdded = GameMove.GO_TO_NEXT;
 
     protected SeedContainer(int owner, int numberOfSeedsInContainer) {
         this.owner = owner;
@@ -15,9 +17,10 @@ public abstract class SeedContainer {
     }
 
     /* Check if current player can add a seed to that entity*/
-    protected abstract boolean addSeed(int player, int mobileSeeds);
+    protected abstract GameMove addSeed(int player, int seedsRemaining);
 
     protected abstract int getSeedCount();
 
+    protected abstract int surrenderAllSeeds();
 
 }

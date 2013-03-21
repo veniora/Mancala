@@ -13,6 +13,8 @@ public class Mancala {
     private boolean isRunning;
     private Board board;
     private int currentPlayer = 1;
+    private int housesPerPlayer = 6;
+    private int seedsPerHouse = 4;
 
 
 	public static void main(String[] args) {
@@ -31,17 +33,42 @@ public class Mancala {
     public void play(){
         /* Give user some reading material while board is created*/
         System.out.println("Welcome to Mancala");
-        board = new Board();
+        board = new Board(housesPerPlayer, seedsPerHouse);
         isRunning = true;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String input;
 
-        while (isRunning){
+        while (isRunning) {
             board.printBoard();
-            promptPlayer(1);
+            board.setPlayer(currentPlayer);
+            promptPlayer(currentPlayer);
             try {
-                String input = in.readLine();
+                input = in.readLine().trim();
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                input = null;
+            }
+
+            if (input.equals("q") || input==null) {
+                isRunning = false;
+                System.out.println("Mancala terminated");
+                break;
+            }
+            /* Convert input to integer*/
+            int selectedHouse;
+            try {
+                selectedHouse = Integer.parseInt(input);
+                if (selectedHouse > housesPerPlayer || selectedHouse < 1) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(String.format("Please choose a number between 1 and %d", housesPerPlayer));
+                continue;
+            }
+
+            /* Get and distribute seeds*/
+            int seeds = board.getSeedsFromHouse(selectedHouse);
+            for (int i = 0; i < seeds; i++){
+                GameMove move = board.insertSeedIntoNextContainer(seeds-i);
             }
         }
 

@@ -5,5 +5,5 @@ package mancala;
  * Will be returned from seedContainer classes to tell the game what to do next
  */
 public enum GameMove {
-    EXTRA_TURN,
+    GO_TO_NEXT, STEAL_SEEDS, EXTRA_TURN,
 }

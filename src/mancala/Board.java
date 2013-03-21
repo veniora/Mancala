@@ -8,7 +8,6 @@ package mancala;
  * To change this template use File | Settings | File Templates.
  */
 public class Board {
-    private Board mInstance = null;
     private int housesPerPlayer;
     private int seedsPerHouse;
     private int initialSeedsInStore = 0;
@@ -17,12 +16,9 @@ public class Board {
     private int p1House1Index;
     private int p2House1Index;
     private SeedContainer boardArray[];
+    private int currentContainer;
+    private int currentPlayer;
 
-    public Board() {
-        housesPerPlayer = 6;
-        seedsPerHouse = 4;
-        createBoard();
-    }
 
     public Board(int housesPerPlayer, int seedsPerHouse) {
         this.housesPerPlayer = housesPerPlayer;
@@ -30,6 +26,44 @@ public class Board {
         createBoard();
     }
 
+    public void setPlayer(int player){
+        currentPlayer = player;
+    }
+
+    public int getSeedsFromHouse(int houseNumber){
+        int houseId = houseNumber-1;
+        int seeds = 0;
+        switch (currentPlayer){
+            case 1:
+                currentContainer = p1House1Index+houseId;
+                seeds = boardArray[currentContainer].surrenderAllSeeds();
+                break;
+            case 2:
+                currentContainer = p2House1Index+houseId;
+                seeds = boardArray[currentContainer].surrenderAllSeeds();
+                break;
+        }
+        return seeds;
+    }
+
+    public GameMove insertSeedIntoNextContainer(int seedsRemaining){
+        getNextContainer();
+        GameMove result =  boardArray[currentContainer].addSeed(currentPlayer, seedsRemaining);
+        if (result == null){
+            /* Skip ahead one as it did not accept the seed*/
+            getNextContainer();
+            result =  boardArray[currentContainer].addSeed(currentPlayer, seedsRemaining);
+        }
+        return result;
+    }
+
+    private void getNextContainer(){
+        int next = currentContainer + 1;
+        if (next >= boardArray.length){
+            next = 0;
+        }
+        currentContainer = next;
+    }
     private void createBoard(){
         int boardSize = 2*housesPerPlayer + 2;
         int halfBoard = boardSize/2;
@@ -62,7 +96,7 @@ public class Board {
         /* Top row is player2*/
         String p2Row = "| P2 |";
         for (int i = 0; i < housesPerPlayer; i++){
-            p2Row += String.format(" %d[ %d] |",housesPerPlayer-i,boardArray[p2House1Index+i].getSeedCount());
+            p2Row += String.format(" %d[ %d] |",housesPerPlayer-i,boardArray[p2StoreIndex-1-i].getSeedCount());
         }
         p2Row += String.format("  %d |", boardArray[p1StoreIndex].getSeedCount());
 
