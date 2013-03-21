@@ -4,7 +4,7 @@ package mancala;
  * A simple seed store which can only be accessed by the player who owns it
  */
 public class SeedStore extends SeedContainer {
-    protected SeedStore(int owner, int numberOfSeedsInContainer) {
+    SeedStore(int owner, int numberOfSeedsInContainer) {
         super(owner, numberOfSeedsInContainer);
         lastSeedAdded = GameMove.EXTRA_TURN;
     }

@@ -4,16 +4,16 @@ package mancala;
  * All common functionality that seedContainers must share
  * Created from inside board class
  */
-public abstract class SeedContainer {
+abstract class SeedContainer {
 
-    protected int owner;
-    protected int numberOfSeedsInContainer;
+    final int owner;
+    int numberOfSeedsInContainer;
     /* Override in child classes to add extra behaviour*/
-    protected GameMove regularSeedAdded = GameMove.GO_TO_NEXT;
-    protected GameMove lastSeedAdded = GameMove.GO_TO_NEXT;
-    protected GameMove lastSeedAddedIntoEmpty = GameMove.GO_TO_NEXT;
+    final GameMove regularSeedAdded = GameMove.GO_TO_NEXT;
+    GameMove lastSeedAdded = GameMove.GO_TO_NEXT;
+    GameMove lastSeedAddedIntoEmpty = GameMove.GO_TO_NEXT;
 
-    protected SeedContainer(int owner, int numberOfSeedsInContainer) {
+    SeedContainer(int owner, int numberOfSeedsInContainer) {
         this.owner = owner;
         this.numberOfSeedsInContainer = numberOfSeedsInContainer;
     }

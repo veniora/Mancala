@@ -9,8 +9,6 @@ public class Mancala {
     private boolean isRunning = true;
     private Board board;
     private int currentPlayer = 1;
-    private int housesPerPlayer = 6;
-    private int seedsPerHouse = 4;
     private MockIO io;
 
 
@@ -20,6 +18,8 @@ public class Mancala {
 
 	public void play(MockIO io) {
         this.io = io;
+        int housesPerPlayer = 6;
+        int seedsPerHouse = 4;
         board = new Board(io, housesPerPlayer, seedsPerHouse);
 
         while(isRunning){

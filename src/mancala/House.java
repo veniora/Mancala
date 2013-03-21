@@ -7,7 +7,7 @@ package mancala;
  */
 public class House extends SeedContainer{
 
-    protected House(int owner, int numberOfSeedsInContainer) {
+    House(int owner, int numberOfSeedsInContainer) {
         super(owner, numberOfSeedsInContainer);
         lastSeedAddedIntoEmpty = GameMove.STEAL_SEEDS;
         // Other actions are not of interest
