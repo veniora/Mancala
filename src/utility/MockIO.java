@@ -97,7 +97,7 @@ public class MockIO implements IO {
 	 * @throws TextIOAssertionException If the expected I/O does not occur.
 	 */
 	public String readFromKeyboard(String prompt) {
-		print(prompt);
+//		print(prompt);
 		String input = null;
 		if (_expectedIO != null) {
 			// Take all input from the _expectedIO string.

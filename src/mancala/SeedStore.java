@@ -1,11 +1,7 @@
 package mancala;
 
 /**
- * Created with IntelliJ IDEA.
- * User: michael
- * Date: 21/03/13
- * Time: 11:39 AM
- * To change this template use File | Settings | File Templates.
+ * A simple seed store which can only be accessed by the player who owns it
  */
 public class SeedStore extends SeedContainer {
     protected SeedStore(int owner, int numberOfSeedsInContainer) {
@@ -25,6 +21,11 @@ public class SeedStore extends SeedContainer {
         }
         /* Move failed*/
         return null;
+    }
+
+    /* When taken from another house*/
+    public void insertLiberatedSeeds (int seedNumber){
+        numberOfSeedsInContainer += seedNumber;
     }
 
     @Override

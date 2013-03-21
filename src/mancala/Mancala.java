@@ -18,16 +18,60 @@ public class Mancala {
 
 
 	public static void main(String[] args) {
-		new Mancala().play();
+		new Mancala().play(new MockIO());
 	}
 	public void play(MockIO io) {
 
-		io.println("+----+-------+-------+-------+-------+-------+-------+----+");
-		io.println("| P2 | 6[ 4] | 5[ 4] | 4[ 4] | 3[ 4] | 2[ 4] | 1[ 4] |  0 |");
-		io.println("|    |-------+-------+-------+-------+-------+-------|    |");
-		io.println("|  0 | 1[ 4] | 2[ 4] | 3[ 4] | 4[ 4] | 5[ 4] | 6[ 4] | P1 |");
-		io.println("+----+-------+-------+-------+-------+-------+-------+----+");
-		io.println("Player 1's turn - Specify house number or 'q' to quit: ");
+        board = new Board(housesPerPlayer, seedsPerHouse);
+        isRunning = true;
+
+        while(isRunning){
+            board.printBoard();
+            board.setPlayer(currentPlayer);
+            promptPlayer(currentPlayer);
+            int selectedHouse;
+            selectedHouse = io.readInteger("", 1, 6, -1, "q");
+            if (selectedHouse == -1){
+                isRunning = false;
+                io.println("Game over");
+                board.printBoard();
+                io.finished();
+                break;
+            }
+            /* Get and distribute seeds*/
+            int seeds = board.getSeedsFromHouse(currentPlayer, selectedHouse);
+            if (seeds == 0){
+                System.out.println("House is empty. Move again.");
+                continue;
+            }
+            GameMove move = null;
+            for (int i = 0; i < seeds; i++){
+                move = board.insertSeedIntoNextContainer(seeds-i);
+
+            }
+            /* All seeds placed, look at result of final one*/
+            switch (move){
+                case GO_TO_NEXT:
+                    /* Turn finished on a house in normal conditions*/
+                    switchPlayer();
+                    break;
+                case EXTRA_TURN:
+                    /*Turn ended in player's own store*/
+                    break;
+                case STEAL_SEEDS:
+                    /*Turn ended in an empty house belonging to the player*/
+                    board.emptyHousesIntoStore();
+                    switchPlayer();
+                    break;
+
+            }
+            isRunning = isThereAnotherTurn();
+
+        }
+//        board.printBoard();
+//        promptPlayer(currentPlayer);
+
+
         /* This is the initial display but needs to take in and process the input*/
 	}
     public void play(){
@@ -50,7 +94,8 @@ public class Mancala {
 
             if (input.equals("q") || input==null) {
                 isRunning = false;
-                System.out.println("Mancala terminated");
+                System.out.println("Game over");
+                board.printBoard();
                 break;
             }
             /* Convert input to integer*/
@@ -66,13 +111,63 @@ public class Mancala {
             }
 
             /* Get and distribute seeds*/
-            int seeds = board.getSeedsFromHouse(selectedHouse);
-            for (int i = 0; i < seeds; i++){
-                GameMove move = board.insertSeedIntoNextContainer(seeds-i);
+            int seeds = board.getSeedsFromHouse(currentPlayer, selectedHouse);
+            if (seeds == 0){
+                System.out.println("House is empty. Move again.");
+                continue;
             }
+            GameMove move = null;
+            for (int i = 0; i < seeds; i++){
+                move = board.insertSeedIntoNextContainer(seeds-i);
+
+            }
+            /* All seeds placed, look at result of final one*/
+            switch (move){
+                case GO_TO_NEXT:
+                    /* Turn finished on a house in normal conditions*/
+                    switchPlayer();
+                     break;
+                case EXTRA_TURN:
+                    /*Turn ended in player's own store*/
+                    break;
+                case STEAL_SEEDS:
+                    /*Turn ended in an empty house belonging to the player*/
+                    board.emptyHousesIntoStore();
+                    switchPlayer();
+                    break;
+
+            }
+            isRunning = isThereAnotherTurn();
         }
 
 
+    }
+
+    private void switchPlayer(){
+        if (currentPlayer == 1){
+            currentPlayer = 2;
+        } else {
+            currentPlayer = 1;
+        }
+    }
+    private boolean isThereAnotherTurn() {
+        /* Check if either player has empty houses*/
+        int p1sum = board.countSeedsInPlayerHouses(1);
+        int p2sum = board.countSeedsInPlayerHouses(2);
+        if (p1sum == 0 || p2sum == 0) {
+            System.out.println("Game over");
+            p1sum += board.countSeedsInPlayerStore(1);
+            p2sum += board.countSeedsInPlayerStore(2);
+            System.out.println("    player 1:"+p1sum);
+            System.out.println("    player 2:"+p2sum);
+            if (p1sum > p2sum) {
+                System.out.println("Player 1 wins!");
+            } else if (p2sum > p1sum){
+                System.out.println("Player 2 wins!");
+            }
+            return false;
+        }
+        return true;
     }
 
     private void promptPlayer(int player){

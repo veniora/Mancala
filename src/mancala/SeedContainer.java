@@ -8,8 +8,10 @@ public abstract class SeedContainer {
 
     protected int owner;
     protected int numberOfSeedsInContainer;
+    /* Override in child classes to add extra behaviour*/
     protected GameMove regularSeedAdded = GameMove.GO_TO_NEXT;
     protected GameMove lastSeedAdded = GameMove.GO_TO_NEXT;
+    protected GameMove lastSeedAddedIntoEmpty = GameMove.GO_TO_NEXT;
 
     protected SeedContainer(int owner, int numberOfSeedsInContainer) {
         this.owner = owner;
@@ -22,5 +24,7 @@ public abstract class SeedContainer {
     protected abstract int getSeedCount();
 
     protected abstract int surrenderAllSeeds();
+
+    protected abstract void insertLiberatedSeeds(int seedNumber);
 
 }
